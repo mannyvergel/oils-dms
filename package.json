@@ -1,0 +1,43 @@
+{
+  "name": "oils-dms",
+  "version": "0.1.0",
+  "description": "Oils js DMS plugin.",
+  "keywords": [
+  	"oils",
+    "passport",
+    "authentication",
+    "authorization"
+  ],
+  "author": {
+    "name": "Manny Vergel",
+    "email": "manny@mvergel.com",
+    "url": "http://www.mvergel.com/"
+  },
+  "homepage": "http://mannyvergel.github.io/oils-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mannyvergel/oils-js.git"
+  },
+
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+
+  "dependencies": {
+    "passport": "0.2.x",
+    "passport-local": "0.1.x",
+    "mongodb": "1.3.x"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+
+  "private": true,
+  "main": "oils-dms.js",
+  "oils" : {
+    "enabled": true,
+    "context": "/dms",
+    "documentModel": "/oils/plugins/oils-dms/models/Document.js",
+    "numberOfRecordsPerPage" : 10
+  }
+  
+}
