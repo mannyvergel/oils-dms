@@ -8,8 +8,8 @@ module.exports = {
     docType: {type: String},
     isFolder: Boolean, //need to store for sorting, type == 'Folder'
     path: {
-      parentFolder: {type: String, index: true},
-      parentFolderId: {type: Schema.ObjectId, index: true}
+      parentFolderId: {type: Schema.ObjectId, index: true},
+      absolutePath: {type: String, unique: true, index: true}
     },
     editable: {
       name: String,
@@ -26,12 +26,6 @@ module.exports = {
 
   options: {
     strict: false
-  },
-
-  initSchema: function(documentSchema) {
-    documentSchema.virtual('path.absolutePath').get(function() {
-      return this.path.parentFolder + '/' + this.editable.name;
-    })
   }
 } 
 
