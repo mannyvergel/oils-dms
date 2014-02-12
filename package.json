@@ -36,7 +36,12 @@
   "oils" : {
     "enabled": true,
     "context": "/dms",
-    "documentModel": "/oils/plugins/oils-dms/models/Document.js",
+    "models": {
+      "document": "/oils/plugins/oils-dms/models/Document.js"
+    },
+    "views": {
+      "list": "/oils/plugins/oils-dms/views/list.html"
+    },
     "numberOfRecordsPerPage" : 10
   }
   

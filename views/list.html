@@ -1,0 +1,45 @@
+<html>
+<body>
+
+  <table>
+    <thead>
+      <tr>
+        <th colspan="2">
+          Name
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {%if documents %}
+      {%for document in documents %}
+      <tr>
+        <td>
+          {%if document.isFolder%}
+            *
+          {%else%}
+            -
+          {%endif%}
+        </td>
+        <td>
+        {%if document.isFolder%}
+        <a href="?folderId={{document._id.toString()}}">{{document.editable.name}}</a>
+        {%else%}
+        {{document.editable.name}}
+        {%endif%}
+
+          
+        </td>
+      </tr>
+      {%endfor%}
+
+      {%else%}
+      <tr>
+        <td colspan="2">
+          No documents found.
+        </td>
+      </tr>
+      {%endif%}
+    </tbody>
+  </table>
+</body>
+</html>

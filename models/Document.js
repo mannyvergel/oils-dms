@@ -1,3 +1,5 @@
+var mongoose = include('/node_modules/oils/node_modules/mongoose');
+var Schema = mongoose.Schema;
 module.exports = {
   name: 'oils.dms.Document',
 
@@ -7,6 +9,7 @@ module.exports = {
     isFolder: Boolean, //need to store for sorting, type == 'Folder'
     path: {
       parentFolder: {type: String, index: true},
+      parentFolderId: {type: Schema.ObjectId, index: true}
     },
     editable: {
       name: String,
@@ -31,3 +34,19 @@ module.exports = {
     })
   }
 } 
+
+
+/****
+
+{
+    docType: 'file',
+    isFolder: false,
+    path: {
+        parentFolder: '/'
+    },
+    editable: {
+        name: 'readme.txt'
+    }
+}
+
+***/

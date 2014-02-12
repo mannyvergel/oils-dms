@@ -11,7 +11,7 @@ module.exports = function(pkg, app) {
   self.routes = {
   }
 
-  self.routes[context] = require('./controllers/index.js')(pkg, app);
+  self.routes[context] = require('./controllers/list.js')(pkg, app);
 
 
 }
