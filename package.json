@@ -38,7 +38,8 @@
       "document": "/oils/plugins/oils-dms/models/Document.js"
     },
     "views": {
-      "list": "/oils/plugins/oils-dms/views/list.html"
+      "list": "/oils/plugins/oils-dms/views/document/list.html",
+      "addDocument": "/oils/plugins/oils-dms/views/document/add.html"
     },
     "numberOfRecordsPerPage" : 10
   }

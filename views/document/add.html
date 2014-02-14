@@ -1,0 +1,21 @@
+<html>
+<head>
+</head>
+<body>
+  {% if _errors %}
+  <div class="row">
+    <div class="small-12 columns">
+     {% for err in _errors %}
+    <p style="color: #FF4C4C;">{{err}}</p>
+    {% endfor %}
+    </div>
+  </div>
+
+
+  <form action="{{context|raw}}/add-document" method="post">
+    {%for editable in editables%}
+     <div>{{loop.key}}</div>
+    {%endfor%}
+  </form>
+</body>
+</html>
