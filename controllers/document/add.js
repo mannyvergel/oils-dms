@@ -12,7 +12,7 @@ module.exports = function(pkg, app) {
         
         var fileId = req.params.FILE_ID;
         if (fileId) {
-          fileId = mongoose.Types.ObjectId(fileId)
+          fileId = app.dms.utils.toObjectId(fileId);
           Document.findOne({_id:fileId}, function(err, doc) {
             if (!doc) {
               req.flash('error', 'File not found.');
@@ -53,16 +53,16 @@ module.exports = function(pkg, app) {
         for (var i in app.dms.conf.editables) {
           var editable = app.dms.conf.editables[i];
           var name = editable.name;
-          
-          if (editable.type == "file") {
-            var content = req.body[name];
-            if (content) {
-              doc[name] = new Buffer(req.body[name], "utf8");
+          var content = req.body[name];
+          if (content) {
+            if (editable.type == "file") {
+              doc[name] = new Buffer(content, "utf8");
+              //console.log('SAVEF BUFFER: ' + req.body[name])
+            } else {
+              doc[name] = content;
             }
-            
-            //console.log('SAVEF BUFFER: ' + req.body[name])
           } else {
-            doc[name] = req.body[name];
+            doc[name] = null;
           }
           //console.log('!!!'+  i);
         }

@@ -56,6 +56,40 @@ module.exports = function(pkg, app) {
   var redirectToMainWithError = function(req, res, error) {
     req.flash('error', error);
     res.redirect(pkg.oils.context);
+  };
+
+  self.toObjectId = function(idStr) {
+    try {
+      var id = mongoose.Types.ObjectId(idStr);
+      return id;
+    } catch(e) {
+      console.error('id error: ' + idStr, e);
+    }
+
+    return null;
+  };
+
+  self.initDocRoutes = function() {
+    Document.find({route: {'$ne': null}}, '', {lean: true}, function(err, docs) {
+      for (var i in docs) {
+        var doc = docs[i];
+        handleRoute(app, doc);
+        
+      }
+      
+    })
+  };
+
+  var handleRoute = function(app, doc) {
+    if (app.isDebug) {
+      console.log('Adding DMS route: %s <--> %s', doc.route, doc.name);
+    }
+
+    app.server.get(doc.route, function(req, res) {
+      //TODO: stream
+      res.send(doc.content.toString('utf8'));
+      res.end();
+    })
   }
 }
 /*

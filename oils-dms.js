@@ -24,5 +24,6 @@ module.exports = function(pkg, app) {
   self.routes[context + '/document/add'] = require('./controllers/document/add.js')(pkg, app);
   self.routes[context + '/document/edit/:FILE_ID'] = require('./controllers/document/add.js')(pkg, app);
 
+  app.dms.utils.initDocRoutes(self.routes);
 }
 
