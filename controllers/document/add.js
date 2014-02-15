@@ -43,6 +43,9 @@ module.exports = function(pkg, app) {
         var docType = req.body.docType;
         var name = req.body.name;
         var doc = new Document();
+        if (docType == 'Folder') {
+          doc.isFolder = true;
+        }
         var updateMode = false;
         if (req.body._id) {
           updateMode = true;
@@ -62,14 +65,27 @@ module.exports = function(pkg, app) {
               doc[name] = content;
             }
           } else {
+            if (editable.required) {
+              req.flash('error', editable.name + ' is required.');
+              if (updateMode) {
+                res.redirect(context + '/document/edit/' + req.body._id);
+              } else {
+                var isFolder = '';
+                
+                if (doc.isFolder) {
+                  isFolder = 'y';
+                }
+                res.redirect(context + '/document/add?isFolder=' + isFolder);
+              }
+              
+              return;
+            }
             doc[name] = null;
           }
           //console.log('!!!'+  i);
-        }
+        } 
 
-        if (docType == 'Folder') {
-          doc.isFolder = true;
-        }
+        
 
         doc.docType = docType;
         if (folder) {

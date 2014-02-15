@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
- <form action="{{context|raw}}/document/add" method="post">
+ <form name="myForm" action="{{context|raw}}/document/add" method="post">
     <input type="hidden" name="folderId" value="{{folderId}}"/>
     {%if doc._id%}
     <input type="hidden" name="_id" value="{{doc._id.toString()}}"/>
@@ -46,3 +46,19 @@
 
 {% endblock %}
 
+
+{% block beforeEndBody %}
+<script>
+function bindEvent(element, type, handler) {
+   if(element.addEventListener) {
+      element.addEventListener(type, handler, false);
+   } else {
+      element.attachEvent('on'+type, handler);
+   }
+}
+
+bindEvent(window, 'load', function() {
+  document.myForm.name.select();
+});
+</script>
+{% endblock %}
