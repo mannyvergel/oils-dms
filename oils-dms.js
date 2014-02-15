@@ -14,10 +14,15 @@ module.exports = function(pkg, app) {
 
   var DmsUtils = require('./utils/DmsUtils');
   app.dms.utils = new DmsUtils(pkg, app);
-
+  app.dms.docTypes = ['folder', 'file'];
+  app.dms.conf = pkg.oils;
+  
+  self.routes[context] = function(req, res) {
+    res.redirect(context + '/document/list');
+  }
   self.routes[context + '/document/list'] = require('./controllers/document/list.js')(pkg, app);
   self.routes[context + '/document/add'] = require('./controllers/document/add.js')(pkg, app);
-
+  self.routes[context + '/document/edit/:FILE_ID'] = require('./controllers/document/add.js')(pkg, app);
 
 }
 

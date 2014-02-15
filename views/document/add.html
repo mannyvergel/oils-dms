@@ -1,21 +1,48 @@
-<html>
-<head>
-</head>
-<body>
-  {% if _errors %}
-  <div class="row">
-    <div class="small-12 columns">
-     {% for err in _errors %}
-    <p style="color: #FF4C4C;">{{err}}</p>
-    {% endfor %}
+{% extends '../templates/main.html' %}
+
+{% block title %}Add Document{% endblock %}
+
+{% block head %}
+<style>
+.label {
+  width: 80px;
+  display: inline-block;
+
+}
+</style>
+{% endblock %}
+
+{% block content %}
+ <form action="{{context|raw}}/document/add" method="post">
+    <input type="hidden" name="folderId" value="{{folderId}}"/>
+    {%if doc._id%}
+    <input type="hidden" name="_id" value="{{doc._id.toString()}}"/>
+    {%endif%}
+    <div>
+      <label><span class="label">Name:</span> 
+        <input type="text" name="name" placeholder="name" value="{{doc.name}}" />
+      </label>
     </div>
-  </div>
+    {%if isFolder%}
+    <input type="hidden" name="docType" value="Folder"/>
+    
+    {%else%}
 
+    <input type="hidden" name="docType" value="{{doc.docType}}"/>
+    <div><label><span class="label">Route:</span> 
+      <input type="text" name="route" placeholder="route" value="{{doc.route}}"/>
+      </label>
+    </div>
+    <div><label><span class="label">Content:</span> 
+      <textarea name="content" placeholder="content">{{doc.content.toString('utf8')}}</textarea>
+      </label>
+    </div>
+    {%endif%}
+    <a href="{{context|raw}}/document/list?folderId={{folderId}}">Cancel</a>
+    <input type="submit" value="Add"/>
 
-  <form action="{{context|raw}}/add-document" method="post">
-    {%for editable in editables%}
-     <div>{{loop.key}}</div>
-    {%endfor%}
+    
   </form>
-</body>
-</html>
+
+{% endblock %}
+

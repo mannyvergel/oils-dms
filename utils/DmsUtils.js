@@ -4,11 +4,12 @@ module.exports = function(pkg, app) {
   var mongoose = include('/node_modules/oils/node_modules/mongoose');
   var Document = includeModel(pkg.oils.models.document);
 
-  self.handleFolder = function(parentFolderId, req, res, callback) {
+  self.handleFolder = function(parentFolderId, req, res, callback, parentFolders) {
     if (parentFolderId) {
       try {
         parentFolderId = mongoose.Types.ObjectId(parentFolderId)
       } catch(e) {
+        console.error('Folder id error: ' + parentFolderId, e);
         redirectToMainWithError(req, res, 'Invalid folder.');
         return;
       }
@@ -17,16 +18,34 @@ module.exports = function(pkg, app) {
     Document.findOne({_id: parentFolderId}, function(err, folder) {
       if (parentFolderId) {
         if (!folder) {
+          console.error('Folder not found error: ' + parentFolderId);
           redirectToMainWithError(req, res, 'Folder not found.');
           return
         }
       }
-      if (!folder) {
-        //create a dummy for root folder
-        folder = new Document();
-        folder._id = null;
+    
+      if (folder) {
+        if (parentFolders == null) {
+          parentFolders = [];
+        }
+        parentFolders.unshift(folder);
+        if (folder.parentFolderId) {
+          self.handleFolder(folder.parentFolderId.toString(), req, res, callback, parentFolders);
+          //WARNING this will return
+          return;  
+        }
+        
       }
-      callback(err, folder);
+
+
+      var folderId = null;
+      if (parentFolders) {
+        folder = parentFolders[parentFolders.length-1];
+        folderId = folder._id.toString();
+      }
+      callback(err, folder, folderId, parentFolders); 
+      
+      
 
     })
 

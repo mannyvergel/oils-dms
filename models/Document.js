@@ -7,15 +7,14 @@ module.exports = {
   schema: {
     docType: {type: String},
     isFolder: Boolean, //need to store for sorting, type == 'Folder'
-    path: {
-      parentFolderId: {type: Schema.ObjectId, index: true},
-      absolutePath: {type: String, unique: true, index: true}
-    },
-    editable: {
-      name: String,
-      route: String,
-      content: Buffer
-    },
+    
+    parentFolderId: {type: Schema.ObjectId, index: true},
+    //absolutePath: {type: String, unique: true, index: true}
+    
+    name: String,
+    route: String,
+    content: Buffer,
+    
     meta: {
       lastUpdateDt: {type: Date, default: Date.now},
       lastUpdateBy: {type: String, default: 'SYSTEM'},
@@ -28,19 +27,3 @@ module.exports = {
     strict: false
   }
 } 
-
-
-/****
-
-{
-    docType: 'file',
-    isFolder: false,
-    path: {
-        parentFolder: '/'
-    },
-    editable: {
-        name: 'readme.txt'
-    }
-}
-
-***/
