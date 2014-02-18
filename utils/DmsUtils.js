@@ -73,14 +73,14 @@ module.exports = function(pkg, app) {
     Document.find({route: {'$ne': null}}, '', {lean: true}, function(err, docs) {
       for (var i in docs) {
         var doc = docs[i];
-        handleRoute(app, doc);
+        self.addDocRoute(doc);
         
       }
       
     })
   };
 
-  var handleRoute = function(app, doc) {
+  self.addDocRoute = function(doc) {
     if (app.isDebug) {
       console.log('Adding DMS route: %s <--> %s', doc.route, doc.name);
     }
@@ -90,40 +90,19 @@ module.exports = function(pkg, app) {
       res.send(doc.content.toString('utf8'));
       res.end();
     })
-  }
-}
-/*
-var mongoose = include('/node_modules/oils/node_modules/mongoose');
-var Document = includeModel(pkg.oils.models.document);
+  };
 
-exports.createObjParams = function(pkg, app, req, res) {
-  var objs = new Object();
-  objs.app = app;
-  objs.pkg = pkg;
-  objs.req = req;
-  objs.res = res;
-}
+  self.removeDocRoute = function(doc) {
+    removeRoute(doc.route);
+  };
 
-exports.handleFolder = function(parentFolderId, objs, callback) {
-  if (parentFolderId) {
-    try {
-      parentFolderId = mongoose.Types.ObjectId(parentFolderId)
-    } catch(e) {
-      redirectToMainWithError(req, res, 'Folder not found.');
-      return;
-    }
-    
-  }
-  Document.findOne({_id: parentFolderId}, function(err, parentDoc) {
-    if (parentFolderId) {
-      if (!parentDoc) {
-        redirectToMainWithError(req, res, 'Folder not found.');
-        return
+  var removeRoute = function(routeStr) {
+    var routes = app.server.routes;
+    for (k in routes.get) {
+      if (routes.get[k].path + "" === routeStr + "") {
+        routes.get.splice(k,1);
+        break;
       }
     }
-
-    callback(err, folder);
-
-  })
+  };
 }
-*/
