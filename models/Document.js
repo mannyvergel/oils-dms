@@ -6,7 +6,6 @@ module.exports = {
 
   schema: {
     docType: {type: String},
-    isFolder: Boolean, //need to store for sorting, type == 'Folder'
     
     parentFolderId: {type: Schema.ObjectId, index: true},
     //absolutePath: {type: String, unique: true, index: true}
@@ -20,10 +19,23 @@ module.exports = {
       lastUpdateBy: {type: String, default: 'SYSTEM'},
       createDt: {type: Date, default: Date.now},
       createBy: {type: String, default: 'SYSTEM'}
-    }
+    },
+
+    //auto fields
+    isFolder: Boolean, //need to store for sorting, type == 'Folder'
+    lowerCaseName: {type: String, lowercase: true},
   },
 
   options: {
     strict: false
+  },
+
+  initSchema: function(schema){
+    schema.index({parentFolderId: 1, lowerCaseName: 1}, {unique: true});
+    schema.pre('save', function(next) {
+      this.isFolder = (this.docType == 'Folder');
+      this.lowerCaseName = this.name.toLowerCase();
+      next();
+    })
   }
 } 

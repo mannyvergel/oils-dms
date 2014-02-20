@@ -105,4 +105,44 @@ module.exports = function(pkg, app) {
       }
     }
   };
+
+  self.mkdirs = function(path, callback) {
+    var arrFolders = path.substr(1).split('/');
+    //console.log('!' + arrFolders);
+    _mkdirs(arrFolders, callback, 0);
+   
+  };
+
+  var _mkdirs = function(arrFolders, callback, index, parentFolderId) {
+    var folderName = arrFolders[index];
+    //console.log('ZZZ!!!' + folderName);
+    Document.findOne({parentFolderId: parentFolderId, lowerCaseName: folderName.toLowerCase()}, function(err, doc) {
+      if (!doc) {
+        doc = new Document();
+        doc.name = folderName;
+        
+        doc.parentFolderId = parentFolderId;
+        doc.docType = 'Folder';
+        doc.save(function(err) {
+          if (err) {
+            console.error(err);
+          } else {
+            _handleMkdirsCallback(doc, arrFolders, callback, index, parentFolderId);
+          }
+        });
+      } else {
+        _handleMkdirsCallback(doc, arrFolders, callback, index, parentFolderId);
+      }
+      
+    })
+  };
+
+  var _handleMkdirsCallback = function(doc, arrFolders, callback, index, parentFolderId) {
+    index++;
+    if (index < arrFolders.length) {
+      _mkdirs(arrFolders, callback, index, doc._id);
+    } else {
+      callback(null, doc);
+    }
+  }
 }
