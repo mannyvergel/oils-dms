@@ -49,8 +49,8 @@ module.exports = function(pkg, app) {
           //updateMode = true;
           var id = mongoose.Types.ObjectId(req.body._id);
           Document.findOne({_id: id}, function(err, doc) {
-            if (!doc) {
-
+            if (doc) {
+              handleDocSave(req, res, doc, folder, true);
             }
           })
         } else {
@@ -134,7 +134,7 @@ module.exports = function(pkg, app) {
               console.error('Error saving doc', err);
               req.flash('error', 'Error saving document.');
             } else {
-              req.flash('info', name + ' created successfully.');
+              req.flash('info', doc.name + ' created successfully.');
             }
 
 
