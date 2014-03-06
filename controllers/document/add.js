@@ -138,7 +138,7 @@ module.exports = function(pkg, app) {
             }
 
 
-            folderId = folderId || '';
+            var folderId = doc.parentFolderId || '';
             res.redirect(context + '/document/list?folderId=' + folderId);
           })
         
