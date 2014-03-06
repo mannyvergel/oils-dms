@@ -24,6 +24,7 @@ module.exports = function(pkg, app) {
             if (doc.parentFolderId) {
               folderId = doc.parentFolderId.toString();
             }
+            doc.route = doc.route || '';
             res.renderFile(pkg.oils.views.addDocument,
             {context: context, folderId: folderId, isFolder: doc.isFolder, doc: doc});
           })
@@ -31,6 +32,7 @@ module.exports = function(pkg, app) {
           var doc = new Object();
 
           doc.docType = req.query.docType || 'File';
+          doc.route = doc.route || '';
           res.renderFile(pkg.oils.views.addDocument, 
           {context: context, folderId: folderId, isFolder: req.query.isFolder, doc: doc});
         }
@@ -80,6 +82,7 @@ module.exports = function(pkg, app) {
           var name = editable.name;
           var content = req.body[name];
           if (content) {
+
             if (editable.type == "file") {
               doc[name] = new Buffer(content, "utf8");
               //console.log('SAVEF BUFFER: ' + req.body[name])
@@ -103,6 +106,7 @@ module.exports = function(pkg, app) {
               return;
             }
             doc[name] = null;
+            console.log('!!!' + name + ' :: ' + doc[name]);
           }
           //console.log('!!!'+  i);
         } 
@@ -128,13 +132,14 @@ module.exports = function(pkg, app) {
         //     }
         //   })
         // }
+        doc.meta.lastUpdateDt = new Date();
 
         doc.save(function(err) {
             if (err) {
               console.error('Error saving doc', err);
               req.flash('error', 'Error saving document.');
             } else {
-              req.flash('info', doc.name + ' created successfully.');
+              req.flash('info', doc.name + ' saved successfully.');
             }
 
 

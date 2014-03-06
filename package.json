@@ -43,8 +43,7 @@
     },
     "editables": [{"name": "name", "type": "text", "label": "Name", "required": true},
     {"name": "route", "type": "text", "label": "Route"},
-    {"name": "content", "type": "file", "label": "Content"},
-    {"name": "localPath", "type" : "text", "label": "Local Path"}
+    {"name": "content", "type": "file", "label": "Content"}
     ],
     "numberOfRecordsPerPage" : 10
   }
